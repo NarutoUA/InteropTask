@@ -8,7 +8,7 @@ extern HINSTANCE g_hInstance;
 std::vector<CPatientList::SPatientInfo> CPatientList::s_vecPatients;
 std::wstring CPatientList::s_strConnectionString;
 const std::string CPatientList::s_strAppTitle = "Native Interop GUI";
-void(__stdcall* CPatientList::s_pfShowDetails)(const int iPatientId, const int iSkinId, const wchar_t* szSkinModel, const wchar_t* szSkinType, const wchar_t* szLocation, const wchar_t* szGender, const wchar_t* szPicPath) = NULL;
+CPatientList::SHOWDETAILSPROC CPatientList::s_pfShowDetails = NULL;
 
 BOOL CPatientList::ReceivePatientList(const wchar_t* szConnectionString)
 {
@@ -161,7 +161,7 @@ void CPatientList::OnDialogInit(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 
 	if (ReceivePatientList(s_strConnectionString.c_str()) == FALSE)
 	{
-		MessageBoxA(NULL, "Unable to do smth", s_strAppTitle.c_str(), MB_OK); // TODO
+		MessageBoxA(NULL, "Unable to do smth", s_strAppTitle.c_str(), MB_OK);
 		EndDialog(hWnd, IDCANCEL);
 		return;
 	}
@@ -189,7 +189,7 @@ void CPatientList::OnListDoubleClick(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM
 		HMODULE hLib = LoadLibraryA("InteropDetailCliDll.dll");
 		if (hLib != NULL)
 		{
-			s_pfShowDetails = reinterpret_cast<void(__stdcall *)(const int, const int, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*)>(GetProcAddress(hLib, "_ShowForm@28"));
+			s_pfShowDetails = reinterpret_cast<CPatientList::SHOWDETAILSPROC>(GetProcAddress(hLib, "_ShowForm@28"));
 			if (s_pfShowDetails != NULL)
 			{
 				SPatientDetails objDetails = ReceivePatientDetails(s_strConnectionString.c_str(), szId);

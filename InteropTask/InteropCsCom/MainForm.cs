@@ -15,6 +15,7 @@ namespace InteropCsCom
         private SqlDataReader m_objDataReader = null;
         private readonly string m_strCmdSelectPatientList = "SELECT * FROM tblPatients";
         private readonly string m_strCmdSelectPatientDetails = "SELECT * FROM tblDetails WHERE id = {0}";
+        private readonly string m_strAppTitle = "Managed Interop GUI";
 
         private enum EColumnDetails
         {
@@ -49,7 +50,7 @@ namespace InteropCsCom
                 while (m_objDataReader.Read() == true)
                 {
                     int iRow = dataPatientList.Rows.Add();
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < dataPatientList.Rows[iRow].Cells.Count; i++)
                     {
                         dataPatientList.Rows[iRow].Cells[i].Value = m_objDataReader.GetValue(i);
                     }
@@ -58,7 +59,7 @@ namespace InteropCsCom
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Managed Interop GUI", MessageBoxButtons.OK);
+                MessageBox.Show(ex.Message, m_strAppTitle, MessageBoxButtons.OK);
                 this.Close();
             }
         }
@@ -66,22 +67,32 @@ namespace InteropCsCom
         private void dataPatientList_DoubleClick(object sender, EventArgs e)
         {
             string strCmd = String.Format(m_strCmdSelectPatientDetails, dataPatientList.SelectedRows[0].Cells[0].Value);
-            SqlCommand objSqlCommand = new SqlCommand(strCmd, m_objConnection);
-            objSqlCommand.ExecuteNonQuery();
-            m_objDataReader = objSqlCommand.ExecuteReader();
 
-            if (m_objDataReader.Read() == true)
+            try
             {
-                int iPatientId = m_objDataReader.GetInt32((int)EColumnDetails.COLUMN_PATIENT_ID);
-                int iSkinId = m_objDataReader.GetInt32((int)EColumnDetails.COLUMN_SKIN_ID);
-                string szSkinModel = m_objDataReader.GetString((int)EColumnDetails.COLUMN_SKIN_MODEL);
-                string szSkinType = m_objDataReader.GetString((int)EColumnDetails.COLUMN_SKIN_TYPE);
-                string szLocation = m_objDataReader.GetString((int)EColumnDetails.COLUMN_LOCATION);
-                string szGender = m_objDataReader.GetString((int)EColumnDetails.COLUMN_GENDER);
-                string szPicPath = m_objDataReader.GetString((int)EColumnDetails.COLUMN_PICTURE_PATH);
-                ShowForm(iPatientId, iSkinId, szSkinModel, szSkinType, szLocation, szGender, szPicPath);
+                SqlCommand objSqlCommand = new SqlCommand(strCmd, m_objConnection);
+                objSqlCommand.ExecuteNonQuery();
+                m_objDataReader = objSqlCommand.ExecuteReader();
+
+                if (m_objDataReader.Read() == true)
+                {
+                    int iPatientId = m_objDataReader.GetInt32((int)EColumnDetails.COLUMN_PATIENT_ID);
+                    int iSkinId = m_objDataReader.GetInt32((int)EColumnDetails.COLUMN_SKIN_ID);
+                    string szSkinModel = m_objDataReader.GetString((int)EColumnDetails.COLUMN_SKIN_MODEL);
+                    string szSkinType = m_objDataReader.GetString((int)EColumnDetails.COLUMN_SKIN_TYPE);
+                    string szLocation = m_objDataReader.GetString((int)EColumnDetails.COLUMN_LOCATION);
+                    string szGender = m_objDataReader.GetString((int)EColumnDetails.COLUMN_GENDER);
+                    string szPicPath = m_objDataReader.GetString((int)EColumnDetails.COLUMN_PICTURE_PATH);
+                    ShowForm(iPatientId, iSkinId, szSkinModel, szSkinType, szLocation, szGender, szPicPath);
+                }
+                m_objDataReader.Close();
             }
-            m_objDataReader.Close();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, m_strAppTitle, MessageBoxButtons.OK);
+                this.Close();
+            }
+           
         }
     }
 }

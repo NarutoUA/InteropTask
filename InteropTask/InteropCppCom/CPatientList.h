@@ -52,7 +52,10 @@ private:
 	static std::vector<SPatientInfo> s_vecPatients;
 	static std::wstring s_strConnectionString;
 	const static std::string s_strAppTitle;
-	static void(__stdcall *s_pfShowDetails)(const int iPatientId, const int iSkinId, const wchar_t* szSkinModel, const wchar_t* szSkinType, const wchar_t* szLocation, const wchar_t* szGender, const wchar_t* szPicPath);
+
+	typedef void(__stdcall *SHOWDETAILSPROC)(const int, const int, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*, const wchar_t*);
+
+	static SHOWDETAILSPROC s_pfShowDetails;
 
 public:
 	static void Initialize(const wchar_t* szConnectionString);
