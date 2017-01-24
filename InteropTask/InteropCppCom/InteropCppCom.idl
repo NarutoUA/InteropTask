@@ -1,0 +1,45 @@
+// InteropCppCom.idl : IDL source for InteropCppCom
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (InteropCppCom.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(4E0911BF-37B2-485F-B6B0-10F7F8FD0C4B),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IConnect : IDispatch{
+	
+	[id(1)] HRESULT Connect([in] BSTR szConnectionString);
+};
+[
+	uuid(8F93AE3B-F938-47B3-950A-9E9A6069964A),
+	version(1.0),
+]
+library InteropCppComLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(768FAE2E-45E1-48B6-81D9-C61FD54C31AF)		
+	]
+	dispinterface _IConnectEvents
+	{
+		properties:
+		methods:
+	};
+	[
+		uuid(B9731584-CE49-4D32-A288-D7D4BB6844A8)		
+	]
+	coclass Connect
+	{
+		[default] interface IConnect;
+		[default, source] dispinterface _IConnectEvents;
+	};
+};
+
