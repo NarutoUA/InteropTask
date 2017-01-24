@@ -12,5 +12,5 @@ HINSTANCE g_hInstance = NULL;
 extern "C" BOOL WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
 	g_hInstance = hInstance;
-	return _AtlModule.DllMain(dwReason, lpReserved); 
+	return _AtlModule.DllMain(dwReason, lpReserved);
 }

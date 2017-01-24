@@ -92,7 +92,6 @@ namespace InteropCsCom
                 MessageBox.Show(ex.Message, m_strAppTitle, MessageBoxButtons.OK);
                 this.Close();
             }
-           
         }
     }
 }

@@ -1,24 +1,22 @@
 // InteropCppCom.cpp : Implementation of DLL Exports.
 
-
 #include "stdafx.h"
 #include "resource.h"
 #include "InteropCppCom_i.h"
 #include "dllmain.h"
-
 
 using namespace ATL;
 
 // Used to determine whether the DLL can be unloaded by OLE.
 STDAPI DllCanUnloadNow(void)
 {
-			return _AtlModule.DllCanUnloadNow();
-	}
+	return _AtlModule.DllCanUnloadNow();
+}
 
 // Returns a class factory to create an object of the requested type.
 STDAPI DllGetClassObject(_In_ REFCLSID rclsid, _In_ REFIID riid, _Outptr_ LPVOID* ppv)
 {
-		return _AtlModule.DllGetClassObject(rclsid, riid, ppv);
+	return _AtlModule.DllGetClassObject(rclsid, riid, ppv);
 }
 
 // DllRegisterServer - Adds entries to the system registry.
@@ -26,14 +24,14 @@ STDAPI DllRegisterServer(void)
 {
 	// registers object, typelib and all interfaces in typelib
 	HRESULT hr = _AtlModule.DllRegisterServer();
-		return hr;
+	return hr;
 }
 
 // DllUnregisterServer - Removes entries from the system registry.
 STDAPI DllUnregisterServer(void)
 {
 	HRESULT hr = _AtlModule.DllUnregisterServer();
-		return hr;
+	return hr;
 }
 
 // DllInstall - Adds/Removes entries to the system registry per user per machine.
@@ -51,7 +49,7 @@ STDAPI DllInstall(BOOL bInstall, _In_opt_  LPCWSTR pszCmdLine)
 	}
 
 	if (bInstall)
-	{	
+	{
 		hr = DllRegisterServer();
 		if (FAILED(hr))
 		{
@@ -65,5 +63,3 @@ STDAPI DllInstall(BOOL bInstall, _In_opt_  LPCWSTR pszCmdLine)
 
 	return hr;
 }
-
-

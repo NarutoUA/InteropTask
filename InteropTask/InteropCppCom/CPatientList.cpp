@@ -51,7 +51,7 @@ BOOL CPatientList::ReceivePatientList(const wchar_t* szConnectionString)
 		MessageBoxA(NULL, (LPCSTR)ce.Description(), s_strAppTitle.c_str(), MB_OK);
 		return FALSE;
 	}
-	
+
 	CoUninitialize();
 }
 

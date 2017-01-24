@@ -1,7 +1,5 @@
 ﻿Imports Microsoft.Win32
 
-
-
 Public Class frmMain
     Private Declare Sub Encrypt Lib "InteropCryptCppDll" (ByRef szText As String)
     Private Declare Sub Decrypt Lib "InteropCryptCppDll" (ByRef szText As String)

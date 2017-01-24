@@ -5,7 +5,7 @@
 IMPLEMENT_DYNAMIC(CDetailsDlg, CDialog)
 
 CDetailsDlg::CDetailsDlg(CWnd* pWnd /*= NULL*/)
-	: CDialog(IDD_DLG_DETAILS, pWnd)
+: CDialog(IDD_DLG_DETAILS, pWnd)
 {
 	m_pImage = NULL;
 }
