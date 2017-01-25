@@ -3,6 +3,7 @@
 Public Class frmMain
     Private Const m_strAppSubkey As String = "InteropTask\"
     Private Const m_strAppTitle As String = "Interop Settings Editor"
+    Private Const m_strSoftSubKey As String = "SOFTWARE"
 
     Private Sub frmMain_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -11,11 +12,11 @@ Public Class frmMain
         Dim lConnectionType As Long
         Dim strConnStr As String
 
-        objRegKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\" & m_strAppSubkey, True)
+        objRegKey = Registry.CurrentUser.OpenSubKey(m_strSoftSubKey & "\" & m_strAppSubkey, True)
 
         If objRegKey Is Nothing Then
             Dim tempKey As RegistryKey
-            tempKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", True)
+            tempKey = Registry.CurrentUser.OpenSubKey(m_strSoftSubKey, True)
             tempKey.CreateSubKey(m_strAppSubkey)
             tempKey.Close()
             objRegKey = Registry.CurrentUser.OpenSubKey(m_strAppSubkey, True)
@@ -35,18 +36,17 @@ Public Class frmMain
     Private Sub btnSave_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
         Dim objRegKey As RegistryKey
-        Dim strPassword As String
 
-        If (txtConnStr.Text = "") Then
+        If (txtConnStr.TextLength = 0) Then
             MessageBox.Show("Unable to save settings: Connection string is empty", m_strAppTitle, MessageBoxButtons.OK)
             Exit Sub
         End If
 
-        objRegKey = Registry.CurrentUser.OpenSubKey("Software\" & m_strAppSubkey, True)
+        objRegKey = Registry.CurrentUser.OpenSubKey(m_strSoftSubKey & "\" & m_strAppSubkey, True)
 
         If objRegKey Is Nothing Then
             Dim tempKey As RegistryKey
-            tempKey = Registry.CurrentUser.OpenSubKey("SOFTWARE", True)
+            tempKey = Registry.CurrentUser.OpenSubKey(m_strSoftSubKey, True)
             tempKey.CreateSubKey(m_strAppSubkey)
             tempKey.Close()
             objRegKey = Registry.CurrentUser.OpenSubKey(m_strAppSubkey, True)

@@ -12,8 +12,6 @@ CPatientList::SHOWDETAILSPROC CPatientList::s_pfShowDetails = NULL;
 
 BOOL CPatientList::ReceivePatientList(const wchar_t* szConnectionString)
 {
-	BOOL bCoInited = FALSE;
-
 	if (FAILED(CoInitialize(NULL)))
 	{
 		return FALSE;
@@ -53,6 +51,7 @@ BOOL CPatientList::ReceivePatientList(const wchar_t* szConnectionString)
 	}
 
 	CoUninitialize();
+	return TRUE;
 }
 
 CPatientList::SPatientDetails CPatientList::ReceivePatientDetails(const wchar_t* szConnectionString, const wchar_t* szPatientId)
@@ -144,10 +143,10 @@ LRESULT CALLBACK CPatientList::MainDlgProc(HWND hWnd, UINT uMsg, WPARAM wParam, 
 
 void CPatientList::OnDialogInit(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
-	static HWND hWndLV = NULL;
 	wchar_t* pszHeaders[EConst::LV_COLUMN_COUNT] = { L"id", L"FirstName", L"LastName" };
 
-	if ((hWndLV = CreateListView(hWnd, IDC_LISTVIEW)) == NULL)
+	HWND hWndLV = CreateListView(hWnd, IDC_LISTVIEW);
+	if (hWndLV == NULL)
 	{
 		MessageBoxA(NULL, "Unable to create ListView", s_strAppTitle.c_str(), MB_OK);
 		EndDialog(hWnd, IDCANCEL);
@@ -224,6 +223,7 @@ BOOL WINAPI CPatientList::AddListViewRow(HWND hWndLV, CPatientList::SPatientInfo
 
 	wchar_t szId[EConst::MAX_NAME_LEN];
 	_itow_s(rPatient.id, szId, 10);
+	
 
 	ListView_SetItemText(hWndLV, iLastIndex, 0, szId);
 	ListView_SetItemText(hWndLV, iLastIndex, 1, rPatient.szFirstName);
